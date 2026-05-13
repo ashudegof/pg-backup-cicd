@@ -1,0 +1,12 @@
+stages:
+  - backup
+
+backup_database:
+  stage: backup
+  script: docker exec postgres-1c pg_dump -U postgres testdb > backup.sql && ls -la backup.sql
+  artifacts:
+    paths:
+      - "*.sql"
+    expire_in: 7 days
+  rules:
+    - when: always
