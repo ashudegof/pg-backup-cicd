@@ -1,5 +1,16 @@
 stages:
+  - migrate
   - backup
+
+migrate_database:
+  stage: migrate
+  script:
+    - for f in migrations/*.sql; do
+        echo "Применяю миграцию: $f";
+        docker exec -i postgres-1c psql -U postgres -d testdb < $f;
+      done
+  rules:
+    - when: always
 
 backup_database:
   stage: backup
