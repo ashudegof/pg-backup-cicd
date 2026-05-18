@@ -1,12 +1,11 @@
 #!/bin/bash
-# Скрипт резервного копирования PostgreSQL
+# Скрипт резервного копирования PostgreSQL в пользовательском формате
 
 DATE=$(date +%Y-%m-%d_%H-%M-%S)
-BACKUP_FILE="backup_$DATE.sql"
+BACKUP_FILE="backup_$DATE.dump"
 
-# Делаем дамп базы данных testdb
-docker exec postgres-1c pg_dump -U postgres testdb > $BACKUP_FILE
+# Создаём бэкап в пользовательском формате (сжатый, гибкий)
+docker exec postgres-1c pg_dump -U postgres -Fc testdb > $BACKUP_FILE
 
-# Выводим имя созданного файла
 echo "Бэкап создан: $BACKUP_FILE"
 ls -la $BACKUP_FILE
